@@ -1,3 +1,5 @@
+/* 1) Create a class student. The student class has data members such as roll number, name of student, father name, mother name, contact number and address. Create the derived class test which contains data members representing class (the class in which the student is studying) name, academic year, name of the test (ct1, ct2, end sem etc), name of subject, and test marks of 5 subjects, maximum marks for each subject. Another derived class Result, may be used to calculate the results, including pass/fail criteria and division allocation. There can be another class called storage, which will store and retrieve the data from binary files, such as adding data, storing sorted data, including student, test and result. Create a menu driver program that can be used by a school, for storing, processing, printing results, finding the toppers of each class, failures in a class. */
+
 #include<iostream>
 #include<vector>
 #include<map>
@@ -16,7 +18,7 @@ class Student
     string contact_number;
     string address;
 };
-class Test : public Student
+class Test : protected Student
 {
     protected:
     string class_name;
@@ -26,11 +28,22 @@ class Test : public Student
     map<string,float> max_marks;
     
 };
-class Result : public Test
+class Result : protected Test
 {
+    bool status_of_result=false;
     
     public:
-    Result(){};
+    Result(const Result& obj1)
+    {
+        roll_number=obj1.roll_number;
+        name=obj1.name;
+        father_name=obj1.father_name;
+        mother_name=obj1.mother_name;
+        contact_number=obj1.contact_number;
+        address=obj1.address;
+        class_name=obj1.class_name;
+        academic_year=obj1.academic_year;
+    }
     Result()
     {
         cout<<"Enter Name of Student: "<<endl;
@@ -51,20 +64,19 @@ class Result : public Test
         cin>>academic_year;
         cout<<"Enter name of test of which marks will be entered: "<<endl;
         cin>>name_of_test;
-
         for(int i=0;i<5;i++)
         {
             string subj;
-            float tempmarks;
-            float tempmax_marks;
+            float temp_marks;
+            float temp_max_marks;
             cout<<"Enter Subject Name:"<<endl;
             cin>>subj;
             cout<<"Enter Max Marks of subject:"<<endl;
-            cin>>tempmax_marks;
+            cin>>temp_max_marks;
             cout<<"Enter Marks obtained: "<<endl;
-            cin>>tempmarks;
-            marks[subj]=tempmarks;
-            max_marks[subj]=tempmax_marks;
+            cin>>temp_marks;
+            marks[subj]=temp_marks;
+            max_marks[subj]=temp_max_marks;
         }
 
         if(name_of_test=="End")
@@ -72,25 +84,35 @@ class Result : public Test
             find(obj,roll_number);
         }
     }
-    void calculateResult(Result &ct1, Result &ct2, Result &end)
+    void calculateResult(Result &ct1, Result &ct2)
     {
-        Result r;
-        r.roll_number=ct1.roll_number;
+        Result r(ct1);
+        /* r.roll_number=ct1.roll_number;
         r.name=ct1.name;
         r.father_name=ct1.father_name;
         r.mother_name=ct1.mother_name;
         r.contact_number=ct1.contact_number;
         r.address=ct1.address;
         r.class_name=ct1.class_name;
-        r.academic_year=ct1.academic_year;
+        r.academic_year=ct1.academic_year; */
         for(auto i : ct1.marks)
         {
-            r.marks[i.first]=i.second+ct2.marks[i.first]+end.marks[i.first];
+            r.marks[i.first]=i.second+ct2.marks[i.first]+this->marks[i.first];
         }
         
     }
-
-
+    void decideResult(Result r)
+    {
+        for(auto it:r.marks)
+        {
+            if(r.marks[it.first]<35)
+            {
+                r.status_of_result=true;
+            }
+        }
+        
+    }
+    
     void find(const Storage &obj ,string roll_number)
     {
         vector<Result>v2;
@@ -102,7 +124,7 @@ class Result : public Test
             }
         }
 
-        calculateResult(v2[0],v2[1],v2[2]);
+        calculateResult(v2[0],v2[1]);
     }
 };
 

@@ -3,6 +3,7 @@
 #include<map>
 #include<string>
 #include<algorithm>
+#include<fstraem>
 #include<iterator>
 using namespace std;
 class Student
@@ -66,9 +67,10 @@ class Result : protected Test
             max_marks[subj]=tempmax_marks;
         }
     }
-    void calculateResult(Test &ct1, Test ct2, Test end)
+    Result calculateResult(Result &ct1, Result ct2, Result end)
     {
-        this->roll_number=ct1.roll_number;
+        Result r;
+        r.roll_number=ct1.roll_number;
         r.name=ct1.name;
         r.father_name=ct1.father_name;
         r.mother_name=ct1.mother_name;
@@ -83,6 +85,20 @@ class Result : protected Test
         }
     }
 };
+
+class Storage
+{
+    public :
+
+    void insertToBinaryFile(const Result &obj)
+    {
+        ofstream file("student.dat", ios::out | ios::binary);
+        file.write((char *) &obj,sizeof(Result));
+        
+    }
+
+
+}
 
 int main()
 {

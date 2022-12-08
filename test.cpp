@@ -70,7 +70,15 @@ class Result : protected Test
     Result calculateResult(Result ct1, Result ct2, Result end)
     {
         Result r;
-        r.
+        r.roll_number=ct1.roll_number;
+        r.name=ct1.name;
+        r.father_name=ct1.father_name;
+        r.mother_name=ct1.mother_name;
+        r.contact_number=ct1.contact_number;
+        r.address=ct1.address;
+        r.class_name=ct1.class_name;
+        r.academic_year=ct1.academic_year;
+        r.name_of_test=ct1.name_of_test;
     }
 };
 int main()
@@ -78,4 +86,4 @@ int main()
     Result obj1;
     obj1.calculateResult;
     return 0;
-}s
+}

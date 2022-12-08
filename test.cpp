@@ -30,8 +30,10 @@ class Test : protected Student
 };
 class Result : protected Test
 {
-    bool status_of_result=false;
-    
+    string status_of_result="pass";
+    float total_marks=0;
+    vector<Result>toppers;
+    vector<Result>failures;
     public:
     Result(const Result& obj1)
     {
@@ -98,6 +100,7 @@ class Result : protected Test
         for(auto i : ct1.marks)
         {
             r.marks[i.first]=i.second+ct2.marks[i.first]+this->marks[i.first];
+            total_marks+=r.marks[i.first];
         }
         
     }
@@ -107,12 +110,25 @@ class Result : protected Test
         {
             if(r.marks[it.first]<35)
             {
-                r.status_of_result=true;
+                r.status_of_result="fail";
             }
         }
         
     }
-    
+    void divisionAllocation(const Storage &obj)
+    {
+        for(auto it:obj.v1)
+        {
+            if(it.status_of_result=="fail")
+            {
+                this->failures.push_back(it);
+            }
+            else
+            {
+                toppers.push_back(it);
+            }
+        }
+    }
     void find(const Storage &obj ,string roll_number)
     {
         vector<Result>v2;
@@ -126,7 +142,20 @@ class Result : protected Test
 
         calculateResult(v2[0],v2[1]);
     }
+
+    friend void Sort(Result &);
+    friend bool compare(Result &,Result &);
 };
+
+bool compare(Result &obj1, Result &obj2)
+{
+    return obj1.total_marks>obj1.total_marks;
+}
+void Sort(Result &obj)
+{
+    sort(obj.toppers.begin(),obj.toppers.end(),compare);
+}
+
 
 class Storage
 {

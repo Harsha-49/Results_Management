@@ -3,7 +3,7 @@
 #include<map>
 #include<string>
 #include<algorithm>
-#include<fstraem>
+#include<fstream>
 #include<iterator>
 using namespace std;
 class Student
@@ -16,7 +16,7 @@ class Student
     string contact_number;
     string address;
 };
-class Test : protected Student
+class Test : public Student
 {
     protected:
     string class_name;
@@ -26,7 +26,7 @@ class Test : protected Student
     map<string,float> max_marks;
     
 };
-class Result : protected Test
+class Result : public Test
 {
     
     public:
@@ -66,8 +66,13 @@ class Result : protected Test
             marks[subj]=tempmarks;
             max_marks[subj]=tempmax_marks;
         }
+
+        if(name_of_test=="End")
+        {
+            find(obj,roll_number);
+        }
     }
-    Result calculateResult(Result &ct1, Result ct2, Result end)
+    void calculateResult(Result &ct1, Result &ct2, Result &end)
     {
         Result r;
         r.roll_number=ct1.roll_number;
@@ -78,27 +83,60 @@ class Result : protected Test
         r.address=ct1.address;
         r.class_name=ct1.class_name;
         r.academic_year=ct1.academic_year;
-        r.name_of_test=ct1.name_of_test;
-        for(auto it: ct1.marks)
+        for(auto i : ct1.marks)
         {
-            r.
+            r.marks[i.first]=i.second+ct2.marks[i.first]+end.marks[i.first];
         }
+        
+    }
+
+
+    void find(const Storage &obj ,string roll_number)
+    {
+        vector<Result>v2;
+        for(auto i : obj.v1)
+        {
+            if(roll_number==i.roll_number)
+            {
+                v2.push_back(i);
+            }
+        }
+
+        calculateResult(v2[0],v2[1],v2[2]);
     }
 };
 
 class Storage
 {
     public :
+    vector<Result>v1;
 
     void insertToBinaryFile(const Result &obj)
     {
-        ofstream file("student.dat", ios::out | ios::binary);
+        ofstream file("binaryFile", ios::app | ios::binary);
         file.write((char *) &obj,sizeof(Result));
-        
     }
 
+    void readFromBinaryFile()
+    {
+        Result object;
+        ifstream file("binaryFile",ios::in | ios::binary);
+        while(!file.eof())
+        {
+            file.read((char *)&object,sizeof(Result));
+            v1.push_back(object);
 
-}
+            if(file.gcount()==0)
+            {
+                break;
+            }
+        }
+    }
+
+    friend class Result;
+
+
+}obj;
 
 int main()
 {

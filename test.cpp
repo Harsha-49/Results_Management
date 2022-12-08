@@ -21,14 +21,15 @@ class Test : protected Student
     string class_name;
     string academic_year;
     string name_of_test;
-    map<string,int> marks;
-    map<string,int> max_marks;
+    map<string,float> marks;
+    map<string,float> max_marks;
     
 };
 class Result : protected Test
 {
     
     public:
+    Result(){};
     Result()
     {
         cout<<"Enter Name of Student: "<<endl;
@@ -49,19 +50,20 @@ class Result : protected Test
         cin>>academic_year;
         cout<<"Enter name of test of which marks will be entered: "<<endl;
         cin>>name_of_test;
+
         for(int i=0;i<5;i++)
         {
             string subj;
-            float marks;
-            float max_marks;
+            float tempmarks;
+            float tempmax_marks;
             cout<<"Enter Subject Name:"<<endl;
             cin>>subj;
             cout<<"Enter Max Marks of subject:"<<endl;
-            cin>>max_marks;
+            cin>>tempmax_marks;
             cout<<"Enter Marks obtained: "<<endl;
-            cin>>marks;
-            marks[subj]=marks;
-            marks[subj]=max_marks;
+            cin>>tempmarks;
+            marks[subj]=tempmarks;
+            marks[subj]=tempmax_marks;
         }
         
         cout<<"Enter Address of Student: "<<endl;
@@ -81,9 +83,10 @@ class Result : protected Test
         r.name_of_test=ct1.name_of_test;
     }
 };
+
 int main()
 {
     Result obj1;
-    obj1.calculateResult;
+    // obj1.calculateResult();
     return 0;
 }

@@ -1,4 +1,4 @@
-#include<bits/stdc++.h>
+#include<iostream>
 #include<vector>
 #include<map>
 #include<string>
@@ -63,16 +63,12 @@ class Result : protected Test
             cout<<"Enter Marks obtained: "<<endl;
             cin>>tempmarks;
             marks[subj]=tempmarks;
-            marks[subj]=tempmax_marks;
+            max_marks[subj]=tempmax_marks;
         }
-        
-        cout<<"Enter Address of Student: "<<endl;
-        cin>>address;
     }
-    Result calculateResult(Result ct1, Result ct2, Result end)
+    void calculateResult(Test &ct1, Test ct2, Test end)
     {
-        Result r;
-        r.roll_number=ct1.roll_number;
+        this->roll_number=ct1.roll_number;
         r.name=ct1.name;
         r.father_name=ct1.father_name;
         r.mother_name=ct1.mother_name;
@@ -81,6 +77,10 @@ class Result : protected Test
         r.class_name=ct1.class_name;
         r.academic_year=ct1.academic_year;
         r.name_of_test=ct1.name_of_test;
+        for(auto it: ct1.marks)
+        {
+            r.
+        }
     }
 };
 
